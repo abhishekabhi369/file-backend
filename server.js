@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
 const app = express();
-const port = 4000;
+const port = process.env.PORT || 4000;
 app.use(cors());
 app.get('/check-file', (req, res) => {
      const filePath = path.join('C:', 'config', 'config.txt');
