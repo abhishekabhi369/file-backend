@@ -6,7 +6,7 @@ const app = express();
 const port = process.env.PORT || 4000;
 app.use(cors());
 app.get('/check-file', (req, res) => {
-     const filePath = path.join('C:', 'config', 'config.txt');
+  const filePath = path.join(__dirname, 'config', 'config.txt');
     fs.access(filePath, fs.constants.F_OK, (err) => {
       if (err) {
         console.error('File not found:', err); 
