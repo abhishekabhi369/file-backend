@@ -4,18 +4,31 @@ const path = require('path');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 4000;
+
 app.use(cors());
+
 app.get('/check-file', (req, res) => {
   const filePath = path.join(__dirname, 'config', 'config.txt');
-    fs.access(filePath, fs.constants.F_OK, (err) => {
+
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.error('File not found:', err);
+      return res.status(404).json({ message: 'File not found' });
+    }
+
+    console.log('File exists, reading content...');
+    fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {
-        console.error('File not found:', err); 
-        return res.status(404).json({ message: 'File not found' });
+        console.error('Error reading file:', err);
+        return res.status(500).json({ message: 'Error reading file' });
       }
-      console.log("File exists");
-      res.status(200).json({ message: 'File exists' });
+
+      console.log('File content:', data);
+      res.status(200).json({ message: 'File exists', content: data });
     });
   });
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
 });
