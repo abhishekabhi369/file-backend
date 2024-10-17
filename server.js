@@ -15,16 +15,14 @@ app.get('/check-file', (req, res) => {
       console.error('File not found:', err);
       return res.status(404).json({ message: 'File not found' });
     }
-
     console.log('File exists, reading content...');
     fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {
         console.error('Error reading file:', err);
         return res.status(500).json({ message: 'Error reading file' });
       }
-
-      console.log('File content:', data);
       res.status(200).json({ message: 'File exists', content: data });
+
     });
   });
 });
